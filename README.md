@@ -45,7 +45,12 @@ The entire pipeline was built on MSK High Performance Computing (HPC) platform w
     1) step1_preprocessing.sh
     2) step2_Mutect2_VEP.sh
     
-  Each consists of multiple heavy-load tasks, which take long time to accomplish. Please be sure to wait till the step1 to be successfully accomplished before the step2 could be launched. While I don't expect end users to trouble shoot any errors that cause interruption of the pipeline, the pipeline does log the running status and errors in a log file named like "nohup_step1_*.log" or "nohup_step2_*.log". A note message "Mission Accomplished!" at the end of the log file indicates the success of the step. Make sure you see it before you go to next step.
+  Each consists of multiple heavy-load tasks, which take long time to accomplish. Please be sure to wait 
+till the step1 to be successfully accomplished before the step2 could be launched. While I don't expect 
+end users to trouble shoot any errors that cause interruption of the pipeline, the pipeline does log the 
+running status and errors in a log file named like "nohup_step1_*.log" or "nohup_step2_*.log". A note message 
+"Mission Accomplished!" at the end of the log file indicates the success of the step. Make sure you see it 
+before you go to next step.
   
   Hierachical DATA organization
   
@@ -55,9 +60,20 @@ The entire pipeline was built on MSK High Performance Computing (HPC) platform w
   nohup sh step1_preprocessing.sh DATA_PATH PROJECT SUBJECT SAMPLE READGROUP 2>&1 >nohup_step1_SAMPLE.log &
   
   .OPTIONS.
-  DATA_PATH  a root directory of the entire study, required        e.g. /home/luol2/lingqi_workspace/Projects/Ben_Projects
-  PROJECT    a project name, required                              e.g. WES_mouse_Project_10212_E
-  SUBJECT    a subject name if any                                 e.g. any name here, if no, just use '.'
-  SAMPLE     a sample name, required                               e.g. Sample_CT26CDDP_M1_IGO_10212_E_13
+  DATA_PATH  a root directory of the entire study, required.             e.g. /home/luol2/lingqi_workspace/Projects/Ben_Projects
+  PROJECT    a project name, required.                                   e.g. WES_mouse_Project_10212_E
+  SUBJECT    a subject name if any.                                      e.g. any name here, if no, just use '.'
+  SAMPLE     a sample name, required.                                    e.g. Sample_CT26CDDP_M1_IGO_10212_E_13
+  READGROUP  a read group ID for the sample in fastq file, required.     e.g. HMVGLDRXX.2
+  
+  
+  # Mutect2 calling & VEP annotation
+  nohup sh step2_Mutect2_VEP.sh DATA_PATH PROJECT SUBJECT SAMPLE 2>&1 >nohup_step2_SAMPLE.log &
+  
+  .OPTIONS.
+  Same as the options in step 1, except READGROUP is not required here
   
 ```
+
+# Versioning
+For the versions available, see the tags on this repository.
