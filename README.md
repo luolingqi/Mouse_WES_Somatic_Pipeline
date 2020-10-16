@@ -32,7 +32,8 @@ The entire pipeline was built on top of GATK/Mutect against the GRcm38/mm10 refe
   * `step2_Mutect2_VEP.sh` -- it takes the duplicate-removed and BQSR-recalibrated file from `step1_preprocessing.sh`, and run the following tasks:
     1) Somatic Variant Calling and filtration using **GATK Mutect2**
     2) Removing Germline SNP/INDEL variants of the BALB/cJ strain
-    3) ENSEMBL VEP variant annotation, and extra manual filtrations(MAF, MPOS5, etc.)
+    3) ENSEMBL VEP variant annotation & type filtration
+    4) Extra manual filtrations by quality (AD, MBQ, MMQ, MPOS5, etc.)
     
 **Prerequisites for Running the Pipeline**<br/>
 
