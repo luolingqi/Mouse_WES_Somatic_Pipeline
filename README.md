@@ -1,9 +1,10 @@
 # Diaz Lab Mouse WES Somatic Variant Calling Pipeline (Primary Analysis)
-### The legitimate pipeline was built on top of GATK/Mutect against the mm10 reference mouse resource bundle, optimized by serious mutation filters. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 This is a version-controlled code repository for **Mouse Somatic Variant Calling Pipeline** in development by the Diaz group at MSKCC. The pipeline implementation is specific for execution by the members in the **Diaz group only!!!**
 
+&nbsp;&nbsp;&nbsp;&nbsp;
+The entire pipeline was built on top of GATK/Mutect against the GRcm38/mm10 reference mouse resource bundle, further reinforced by a few more manual variant filtration and legimate ENSEMBL VEP annotation
 
 **Primary Lilac Locations for the Pipeline and associated resource bundles**
 
@@ -18,7 +19,7 @@ This is a version-controlled code repository for **Mouse Somatic Variant Calling
   
 * ENSEMBL VEP resources for both Mouse and Human: **_/home/luol2/lingqi_workspace/vep_data_**
 
-**Primary Scripts for automatic pipeline running:**
+**Primary Scripts for automatic pipeline running**
   * `step1_preprocessing.sh` -- it takes fastq file and readgroup info as inputs, and run the following tasks: 
     1) Quality checking of raw fastq files using **Fastqc**
     2) Adapter & low quality reads trimming using **Trimgalore**
@@ -30,5 +31,33 @@ This is a version-controlled code repository for **Mouse Somatic Variant Calling
     
   * `step2_Mutect2_VEP.sh` -- it takes the duplicate-removed and BQSR-recalibrated file from `step1_preprocessing.sh`, and run the following tasks:
     1) Somatic Variant Calling and filtration using **GATK Mutect2**
+    2) Removing Germline SNP/INDEL variants of the BALB/cJ strain
+    3) ENSEMBL VEP variant annotation, and extra manual filtrations(MAF, MPOS5, etc.)
+    
+**Prerequisites for Running the Pipeline**<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;
+The entire pipeline was built on MSK High Performance Computing (HPC) platform with all the individual building blocks/tools developed in worry-free encapsulated enviroment (Singularity). So, there is little dependency to the system we log in on Lilac, which means, **_anyone with an active Lilac account and basic skill of linux_** can easily run it without any headache of adjusting running environment/parameters.
+
+**Main Pipeline Usage (Primary Analysis Only!)**
+&nbsp;&nbsp;&nbsp;&nbsp;
+```
+  The pipeline is automatically implemented as two bash scripts to cover two steps, as detailed above: 
+    1) step1_preprocessing.sh
+    2) step2_Mutect2_VEP.sh
+    
+  Each consists of multiple heavy-load tasks, which take long time to accomplish. Please be sure to wait till the step1 to be successfully accomplished before the step2 could be launched. While I don't expect end users to trouble shoot any errors that cause interruption of the pipeline, the pipeline does log the running status and errors in a log file named like "nohup_step1_*.log" or "nohup_step2_*.log". A note message "Mission Accomplished!" at the end of the log file indicates the success of the step. Make sure you see it before you go to next step.
+  
+  Hierachical DATA organization
   
   
+  # preprocessing
+  .USAGE.
+  nohup sh step1_preprocessing.sh DATA_PATH PROJECT SUBJECT SAMPLE READGROUP 2>&1 >nohup_step1_SAMPLE.log &
+  
+  .OPTIONS.
+  DATA_PATH  a root directory of the entire study, required        e.g. /home/luol2/lingqi_workspace/Projects/Ben_Projects
+  PROJECT    a project name, required                              e.g. WES_mouse_Project_10212_E
+  SUBJECT    a subject name if any                                 e.g. any name here, if no, just use '.'
+  SAMPLE     a sample name, required                               e.g. Sample_CT26CDDP_M1_IGO_10212_E_13
+  
+```
