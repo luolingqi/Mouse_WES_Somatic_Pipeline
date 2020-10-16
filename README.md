@@ -35,21 +35,27 @@ The entire pipeline was built on top of GATK/Mutect against the GRcm38/mm10 refe
     3) ENSEMBL VEP variant annotation, and extra manual filtrations(MAF, MPOS5, etc.)
     
 **Prerequisites for Running the Pipeline**<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;
-The entire pipeline was built on MSK High Performance Computing (HPC) platform with all the individual building blocks/tools developed in worry-free encapsulated enviroment (Singularity). So, there is little dependency to the system we log in on Lilac, which means, **_anyone with an active Lilac account and basic skill of linux_** can easily run it without any headache of adjusting running environment/parameters.
+
+* The entire pipeline was built on MSK High Performance Computing (HPC) platform with all the individual building blocks/tools developed in worry-free encapsulated enviroment (Singularity). So, there is little dependency to the system we log in on Lilac, which means, **_anyone with an active Lilac account and basic skill of linux_** can easily run it without any headache of adjusting running environment/parameters.
+* The input data structure needs to be organized as following, so that the pipeline can locate the pair-end fastq files in gz format in each sample folder.
+```
+DATA_PATH/
+|-- PROJECT/
+|   |-- SUBJECT/ # can be missed
+|       |-- SAMPLE/
+|           |-- *R1*fastq.gz
+|           |-- *R2*fastq.gz
+```
+
 
 **Main Pipeline Usage (Primary Analysis Only!)**<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;
-  The pipeline is automatically implemented as two bash scripts to cover two steps, as detailed above: 
+The pipeline is automatically implemented as two bash scripts to cover two steps, as detailed above: 
     1) step1_preprocessing.sh
     2) step2_Mutect2_VEP.sh
     
-  Each step consists of multiple heavy-load tasks, which take long time to accomplish. Please be sure to wait 
-till the step1 to be successfully accomplished before the step2 could be launched. While I don't expect 
-end users to trouble shoot any errors that cause interruption of the pipeline, the pipeline does log the 
-running status and errors in a log file named like "nohup_step1_*.log" or "nohup_step2_*.log". A note message 
-"Mission Accomplished!" at the end of the log file indicates the success of the step. Make sure you see it 
-before you go to next step.
+&nbsp;&nbsp;&nbsp;&nbsp;    
+  Each step consists of multiple heavy-load tasks, which take long time to accomplish. Please be sure to wait till the step1 to be successfully accomplished before the step2 could be launched. While I don't expect end users to trouble shoot any errors that cause interruption of the pipeline, the pipeline does log the  running status and errors in a log file named like "nohup_step1_*.log" or "nohup_step2_*.log". A note message "Mission Accomplished!" at the end of the log file indicates the success of the step. Make sure you see it before you go to next step.
   
 ```  
   # preprocessing
