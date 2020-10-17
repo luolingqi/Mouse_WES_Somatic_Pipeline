@@ -80,11 +80,11 @@ The pipeline is automatically implemented as two bash scripts to cover two steps
 ```
 
 ## Versioning
-For the versions available, see the tags on this repository.
+For the versions available, see the [tags on this repository](https://github.com/luolingqi/Mouse_WES_Somatic_Primary_Analysis/releases/tag/v0.2-alpha).
 
 ## Authors
-* Lingqi Luo - initial drafting - luolingqi
-See also the list of contributors who participated in this project.
+* **Lingqi Luo, PhD** - initial drafting - [luolingqi](https://github.com/luolingqi) <br/>
+See also the list of [contributors](https://github.com/luolingqi/Mouse_WES_Somatic_Primary_Analysis/contributors) who participated in this project.
 
 ## License
 This project is licensed by the Diaz laboratory at MSKCC. Only Diaz group is authorized to use this pipeline.
