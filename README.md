@@ -50,13 +50,15 @@ DATA_PATH/
 
 
 **Main Pipeline Usage (Primary Analysis Only!)**<br/>
+
 &nbsp;&nbsp;&nbsp;&nbsp;
-The pipeline is automatically implemented as two bash scripts to cover two steps, as detailed above: 
+The pipeline is automatically implemented in two steps using the following two batch scripts respectively: 
     1) step1_preprocessing.sh
     2) step2_Mutect2_VEP.sh
-    
+&nbsp;&nbsp;&nbsp;&nbsp;
+Please first copy all the shell scripts into a folder as your working directory and launch the 2 steps from there!
 &nbsp;&nbsp;&nbsp;&nbsp;    
-  Each step consists of multiple heavy-load tasks, which take long time to accomplish. Please be sure to wait till the step1 to be successfully accomplished before the step2 could be launched. While I don't expect end users to trouble shoot any errors that cause interruption of the pipeline, the pipeline does log the  running status and errors in a log file named like "nohup_step1_*.log" or "nohup_step2_*.log". A note message "Mission Accomplished!" at the end of the log file indicates the success of the step. Make sure you see it before you go to next step.
+Each step consists of multiple heavy-load tasks, which take long time to accomplish. Please be sure to wait till the step1 to be successfully accomplished before the step2 could be launched. While I don't expect end users to trouble shoot any errors that cause interruption of the pipeline, the pipeline does log the  running status and errors in a log file named like "nohup_step1_*.log" or "nohup_step2_*.log". A note message "Mission Accomplished!" at the end of the log file indicates the success of the step. Make sure you see it before you go to next step.
   
 ```  
   # preprocessing
