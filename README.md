@@ -1,4 +1,4 @@
-# Diaz Lab Mouse WES Somatic Variant Calling Pipeline (Primary Analysis)
+# Diaz Lab Mouse WES Somatic Variant Calling Pipeline
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 This is a version-controlled code repository for **Mouse Somatic Variant Calling Pipeline** in development by the Diaz group at MSKCC. The pipeline implementation is specific for execution by the members in the **Diaz group only!!!**
