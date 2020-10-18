@@ -6,6 +6,9 @@ This is a version-controlled code repository for **Mouse Somatic Variant Calling
 &nbsp;&nbsp;&nbsp;&nbsp;
 The entire pipeline was built on top of GATK/Mutect against the GRcm38/mm10 reference mouse resource bundle, further reinforced by a few more manual variant filtration and legimate ENSEMBL VEP annotation
 
+![GitHub Logo](/images/Mouse_WES_Somatic_Mutation_Calling_Pipeline.png)
+
+
 **Primary Lilac Locations for the Pipeline and associated resource bundles**
 
 * Top-level directory of the pipeline: **_/home/luol2/lingqi_workspace/Mouse_WES_Pipeline_** w/sub-directories: 
@@ -48,6 +51,7 @@ DATA_PATH/
 |           |-- *R2*fastq.gz
 ```
 
+<font size=5>Description</font>
 
 **Main Pipeline Usage (Primary Analysis Only!)**
 
