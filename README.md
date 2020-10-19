@@ -9,7 +9,7 @@ The entire pipeline was built on top of GATK/Mutect against the GRcm38/mm10 refe
 ![GitHub Logo](/images/Mouse_WES_Somatic_Mutation_Calling_Pipeline.png)
 
 
-**Primary Lilac Locations for the Pipeline and associated resource bundles**
+**Primary Lilac Locations for the Pipeline and associated Resource Bundles**
 
 * Top-level directory of the pipeline: **_/home/luol2/lingqi_workspace/Mouse_WES_Pipeline_** w/sub-directories: 
   - Main pipeline implementation scripts: **_`/Primary`_**
@@ -22,21 +22,21 @@ The entire pipeline was built on top of GATK/Mutect against the GRcm38/mm10 refe
   
 * ENSEMBL VEP resources for both Mouse and Human: **_/home/luol2/lingqi_workspace/vep_data_**
 
-**Primary Scripts for automatic pipeline running**
-  * `step1_preprocessing.sh` -- it takes fastq file and readgroup info as inputs, and run the following tasks: 
-    1) Quality checking of raw fastq files using **Fastqc**
-    2) Adapter & low quality reads trimming using **Trimgalore**
-    3) Trimmed fastq to uBAM format conversion required by GATK pipeline
-    4) BWA MEM alignment to Reference Mouse Genome (mm10)
-    5) Alignment quality metrics collection using **Qualimap**
-    6) Hybrid selection quality metrics collection using **GATK HsMetrics**
-    7) Estimate and Apply MarkDuplicate and Base Quality Score recalibration using **GATK**
+**Primary Scripts for Automatic Pipeline Running**
+  * `step1_preprocessing.sh` -- it takes fastq file and readgroup info as inputs, and runs the following as listed in the table below
+
+  * `step2_Mutect2_VEP.sh` -- it takes the duplicate-removed and BQSR-recalibrated file outputs from `step1_preprocessing.sh`, and runs the following as listed in the table below
     
-  * `step2_Mutect2_VEP.sh` -- it takes the duplicate-removed and BQSR-recalibrated file from `step1_preprocessing.sh`, and run the following tasks:
-    1) Somatic Variant Calling and filtration using **GATK Mutect2**
-    2) Removing Germline SNP/INDEL variants of the BALB/cJ strain
-    3) ENSEMBL VEP variant annotation & type filtration
-    4) Extra manual filtrations by quality (AD, MBQ, MMQ, MPOS5, etc.)
+Step1: Data Quality Checking & Preprocessing  |  Step2: Variant Calling, filtering & Annotation
+-------------------------------------------   |  ----------------------------------------------
+Quality checking of raw fastq files <br/> **(Fastqc - run_fastqc.sh)**  |  Somatic Variant Calling and filtration <br/> **(GATK Mutect2 - run_mutect2_and_Filter.sh)**
+Adapter & low quality reads trimming <br/> **(Trimgalore - run_trim_galore.sh)** |  Removing Germline SNP/INDEL variants <br/> **(For BALB/cJ strain - run_remove_BALB_cJ_germline_snp_indels.sh)**
+Trimmed fastq to uBAM format conversion <br/> **(required by GATK pipeline - run_fastq_to_uBAM.sh)**  |  ENSEMBL VEP variant annotation & type filtration <br/> **(missense, frameshit, nonsynonymous, etc. - run_VEP_annotation_BALB_cJ.sh)**
+BWA MEM alignment to GRCm38/mm10 <br/> **(BWA MEM - run_bwa_mem.sh)**  |  Extra manual filtrations by quality <br/> **(AD, MBQ, MMQ, MPOS5, etc. - run_VEP_annotation_BALB_cJ.sh)**
+Alignment quality metrics collection <br/> **(Qualimap - run_qualimap.sh)**  |  
+Hybrid selection quality metrics collection <br/> **(GATK HsMetrics - run_CollectHsMetrics.sh)**  |  
+Estimate and Apply MarkDuplicate and <br/> Base Quality Score recalibration <br/> **(GATK MarkDuplicate, BQSR  - run_markduplicate.sh)**  |  
+
     
 **Prerequisites for Running the Pipeline**<br/>
 
