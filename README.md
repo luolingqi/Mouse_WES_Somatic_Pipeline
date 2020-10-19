@@ -51,7 +51,6 @@ DATA_PATH/
 |           |-- *R2*fastq.gz
 ```
 
-<font size=5>Description</font>
 
 **Main Pipeline Usage (Primary Analysis Only!)**
 
