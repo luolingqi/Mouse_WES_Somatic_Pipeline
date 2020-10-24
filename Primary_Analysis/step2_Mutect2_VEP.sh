@@ -37,6 +37,8 @@ function checkJobSuccess {
     fi
 }
 
+#0. Copy mouse_all_exon_mm10.interval_list over to current folder (data_analysis)                                                        
+cp /home/luol2/lingqi_workspace/Mouse_WES_Pipeline/Primary/mouse_all_exon_mm10.interval_list .
 
 #1. Mutect2 Calling and Filtration
 perl -pe 's/DATA_PATH/$ENV{data_path}/g;s/PROJECT/$ENV{project}/g;s/SUBJECT/$ENV{subject}/g;s/TEST_SAMPLE/$ENV{sample}/g' run_mutect2_and_Filter.sh | bsub -J mutect_${project}_${subject}_${sample}
