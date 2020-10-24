@@ -9,7 +9,7 @@ data_path=$1;export data_path
 project=$2;export project
 subject=$3;export subject
 sample=$4;export sample
-readGroup=$5;export readGroup # e.g. H2JFYBBXY.5
+#readGroup=$5;export readGroup # e.g. H2JFYBBXY.5
 jobId=""
 jobName=""
 message=""
@@ -30,13 +30,16 @@ function checkJobSuccess {
 
     # track if the job succeeds running. Exit immediately with a failed LSF job
     sleep 20
-    success=$(bhist -l ${jobPrev} | grep  "Done successfully")
+    success=$(grep "Successfully completed" Myjob.${jobPrev}.log)
+    #success=$(bhist -l ${jobPrev} | grep  "Done successfully")
     echo ${success}
     if [ -z "${success}" ]; then
 	exit 1;
     fi
 }
-
+#0. Extract/build readgroup from the sample fastq.gz file
+readGroup=$(gzip -cd ${data_path}/${project}/${subject}/${sample}/*R1_001.fastq.gz | head -1 | cut -d: -f3,4 | perl -pe 's/:/./g')
+export readGroup
 
 #1. Fastqc on the raw fastq files
 perl -pe 's#TEST_SAMPLE#$ENV{sample}#g;s#PROJECT#$ENV{project}#g;s#SUBJECT#$ENV{subject}#g;s#DATA_PATH#$ENV{data_path}#g;s#TRIM##g' run_fastqc.sh |bsub -J fastqc_${project}_${subject}_${sample}
