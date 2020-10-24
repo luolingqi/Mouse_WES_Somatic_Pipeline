@@ -65,7 +65,7 @@ Please first copy all the shell scripts into a folder as your working directory 
 ```  
   # preprocessing
   .USAGE.
-  nohup sh step1_preprocessing.sh DATA_PATH PROJECT SUBJECT SAMPLE READGROUP 2>&1 >nohup_step1_SAMPLE.log &
+  nohup sh step1_preprocessing.sh DATA_PATH PROJECT SUBJECT SAMPLE 2>&1 >nohup_step1_SAMPLE.log &
   
   .OPTIONS.
   DATA_PATH  a root directory of the entire study, required.             e.g. /home/luol2/lingqi_workspace/Projects/Ben_Projects
