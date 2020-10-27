@@ -30,7 +30,8 @@ function checkJobSuccess {
 
     # track if the job succeeds running. Exit immediately with a failed LSF job
     sleep 20
-    success=$(bhist -l ${jobPrev} | grep  "Done successfully")
+    success=$(grep "Successfully completed" Myjob.${jobPrev}.log)
+    #success=$(bhist -l ${jobPrev} | grep  "Done successfully")
     echo ${success}
     if [ -z "${success}" ]; then
 	exit 1;
