@@ -78,7 +78,8 @@ Please first copy all the shell scripts into a folder as your working directory 
   nohup sh step2_Mutect2_VEP.sh DATA_PATH PROJECT SUBJECT SAMPLE NORMAL_SAMPLE 2>&1 >nohup_step2_SAMPLE.log &
   
   .OPTIONS.
-  Same as the options in step 1, except the name of the normal sample (NORMAL_SAMPLE) is not required here <br/>and the normal sample needs to be in the same SUBJECT folder as SAMPLE
+  Same as the options in step 1, except the name of the normal sample (NORMAL_SAMPLE) is not required here
+  and the normal sample needs to be in the same SUBJECT folder as SAMPLE
   
 ```
 
