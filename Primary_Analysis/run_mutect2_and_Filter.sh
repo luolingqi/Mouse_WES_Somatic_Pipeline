@@ -45,6 +45,9 @@ fi
             normal_command_line="-I ${normal_bam} -normal `cat ${normal_name}`"
         fi
 
+	# copy normal name to sample folder also
+	copy ${normal_name} ${data_path}/${project}/${subject}/${sample}
+
         /data/ldiaz/luol2/gatk-4.1.2.0/gatk --java-options "-Xmx${command_mem}m" Mutect2 \
             -R ${ref_fasta} \
             $tumor_command_line \

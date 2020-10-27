@@ -39,6 +39,7 @@ function checkJobSuccess {
     fi
 }
 
+
 #0. Copy mouse_all_exon_mm10.interval_list over to current folder (data_analysis)
 cp /home/luol2/lingqi_workspace/Mouse_WES_Pipeline/Primary/mouse_all_exon_mm10.interval_list .
 
@@ -49,6 +50,7 @@ jobName=mutect_${project}_${subject}_${sample}
 message="Mutect2 calling and filtration going......"
 checkJobSuccess
 sleep 30
+
 
 #2. Remove the Germline dbsnp variants for BALB/cJ strain
 perl -pe 's/DATA_PATH/$ENV{data_path}/g;s/PROJECT/$ENV{project}/g;s/SUBJECT/$ENV{subject}/g;s/TEST_SAMPLE/$ENV{sample}/g' run_remove_BALB_cJ_germline_snp_indels.sh | bsub -J rmsnp_${project}_${subject}_${sample}
