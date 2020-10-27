@@ -49,6 +49,9 @@ DATA_PATH/
 |       |-- SAMPLE/
 |           |-- *R1*fastq.gz
 |           |-- *R2*fastq.gz
+|       |-- NORMAL_SAMPLE/
+|           |-- *R1*fastq.gz
+|           |-- *R2*fastq.gz
 ```
 
 
