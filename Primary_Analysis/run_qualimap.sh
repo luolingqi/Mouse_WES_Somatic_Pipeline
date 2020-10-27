@@ -3,7 +3,7 @@
 #BSUB -n 16 -R "rusage[mem=8]"
 #BSUB -W 48:00
 
-module load singularity/3.0.1-to-ve-removed
+module load singularity/3.1.1
 module load samtools/1.7
 
 #bn=$(basename "Sample_Folder")

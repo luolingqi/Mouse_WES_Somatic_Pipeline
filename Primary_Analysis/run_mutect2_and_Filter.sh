@@ -13,12 +13,13 @@ data_path=DATA_PATH
 project=PROJECT
 subject=SUBJECT
 sample=TEST_SAMPLE
-normal_sample=${data_path}/${project}/Sample_BALBc_Norm_IGO_10212_E_1/Sample_BALBc_Norm_IGO_10212_E_1
+normal_sample=NORMAL_SAMPLE
+#normal_sample=${data_path}/${project}/Sample_BALBc_Norm_IGO_10212_E_1/Sample_BALBc_Norm_IGO_10212_E_1
 
 tumor_bam=${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.bam
-normal_bam=${normal_sample}.aligned.duplicates_marked.recalibrated.bam
+normal_bam=${data_path}/${project}/${subject}/${normal_sample}/${normal_sample}.aligned.duplicates_marked.recalibrated.bam
 tumor_name=${data_path}/${project}/${subject}/${sample}/tumor_name.txt
-normal_name=${data_path}/${project}/${subject}/${sample}/normal_name.txt
+normal_name=${data_path}/${project}/${subject}/${normal_sample}/normal_name.txt
 
 unfiltered_output_vcf=${tumor_bam/.bam/.unfiltered.vcf}
 output_vcf=${tumor_bam/.bam/.filtered.vcf}

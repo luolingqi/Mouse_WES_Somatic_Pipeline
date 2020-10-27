@@ -4,7 +4,7 @@
 #BSUB -W 48:00
 
 module load java/1.8.0_31
-module load singularity/3.0.1-to-ve-removed
+module load singularity/3.1.1
 
 data_path="/home/luol2/lingqi_workspace/Projects/Ben_Projects/WES_mouse"
 

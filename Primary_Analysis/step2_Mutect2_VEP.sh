@@ -9,6 +9,7 @@ data_path=$1;export data_path
 project=$2;export project
 subject=$3;export subject
 sample=$4;export sample
+normal_sample=$5;export normal_sample
 #readGroup=$5;export readGroup # e.g. H2JFYBBXY.5
 jobId=""
 jobName=""
@@ -38,11 +39,11 @@ function checkJobSuccess {
     fi
 }
 
-#0. Copy mouse_all_exon_mm10.interval_list over to current folder (data_analysis)                                                        
+#0. Copy mouse_all_exon_mm10.interval_list over to current folder (data_analysis)
 cp /home/luol2/lingqi_workspace/Mouse_WES_Pipeline/Primary/mouse_all_exon_mm10.interval_list .
 
 #1. Mutect2 Calling and Filtration
-perl -pe 's/DATA_PATH/$ENV{data_path}/g;s/PROJECT/$ENV{project}/g;s/SUBJECT/$ENV{subject}/g;s/TEST_SAMPLE/$ENV{sample}/g' run_mutect2_and_Filter.sh | bsub -J mutect_${project}_${subject}_${sample}
+perl -pe 's/DATA_PATH/$ENV{data_path}/g;s/PROJECT/$ENV{project}/g;s/SUBJECT/$ENV{subject}/g;s/TEST_SAMPLE/$ENV{sample}/g;s/NORMAL_SAMPLE/$ENV{normal_sample}/g' run_mutect2_and_Filter.sh | bsub -J mutect_${project}_${subject}_${sample}
 jobId=$(bjobs -J mutect_${project}_${subject}_${sample} | awk '{print $1}' | grep -v JOBID)
 jobName=mutect_${project}_${subject}_${sample}
 message="Mutect2 calling and filtration going......"

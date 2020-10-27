@@ -3,7 +3,7 @@
 #BSUB -n 2 -R "rusage[mem=8]"
 #BSUB -W 48:00
 
-module load singularity/3.0.1-to-ve-removed
+module load singularity/3.1.1
 module load java/1.8.0_31
 
 project=PROJECT

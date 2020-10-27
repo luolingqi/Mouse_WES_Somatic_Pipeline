@@ -3,7 +3,7 @@
 #BSUB -n 1 -R "rusage[mem=16]"
 #BSUB -W 48:00
 
-module load singularity/3.0.1-to-ve-removed
+module load singularity/3.1.1
 
 trim=TRIM
 project=PROJECT
