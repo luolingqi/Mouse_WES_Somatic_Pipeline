@@ -72,14 +72,13 @@ Please first copy all the shell scripts into a folder as your working directory 
   PROJECT    a project name, required.                                   e.g. WES_mouse_Project_10212_E
   SUBJECT    a subject name if any.                                      e.g. any name here, if no, just use '.'
   SAMPLE     a sample name, required.                                    e.g. Sample_CT26CDDP_M1_IGO_10212_E_13
-  READGROUP  a read group ID for the sample in fastq file, required.     e.g. HMVGLDRXX.2
   
   
   # Mutect2 calling & VEP annotation
-  nohup sh step2_Mutect2_VEP.sh DATA_PATH PROJECT SUBJECT SAMPLE 2>&1 >nohup_step2_SAMPLE.log &
+  nohup sh step2_Mutect2_VEP.sh DATA_PATH PROJECT SUBJECT SAMPLE NORMAL_SAMPLE 2>&1 >nohup_step2_SAMPLE.log &
   
   .OPTIONS.
-  Same as the options in step 1, except READGROUP is not required here
+  Same as the options in step 1, except the name of the normal sample (NORMAL_SAMPLE) is not required here <br/>and the normal sample needs to be in the same SUBJECT folder as SAMPLE
   
 ```
 
