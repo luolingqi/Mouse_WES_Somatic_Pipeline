@@ -13,7 +13,7 @@ data_path=DATA_PATH
 
 # Sample_Folder would be replacable by any folder path to a sample
 mkdir -p ${data_path}/${project}/${subject}/${sample}/trim_galore_output;
-/bin/cp ~/bin/trim_galore_docker_code.sh ${data_path}/${project}/${subject}/${sample}/trim_galore_output;
+/bin/cp /home/luol2/bin/trim_galore_docker_code.sh ${data_path}/${project}/${subject}/${sample}/trim_galore_output;
 singularity run \
     --bind ${data_path}/${project}/${subject}/${sample}:/data \
     --bind ${data_path}/${project}/${subject}/${sample}/trim_galore_output:/data2 \
