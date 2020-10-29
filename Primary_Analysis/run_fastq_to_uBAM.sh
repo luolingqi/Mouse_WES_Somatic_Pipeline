@@ -11,11 +11,11 @@ sample=TEST_SAMPLE
 readGroup=READGROUP # e.g.   H2JFYBBXY.5
 data_path=DATA_PATH #e.g.    /home/luol2/lingqi_workspace/Projects/Jones_Lee_Exercise_Project
 mkdir `pwd`/tmp_${sample}
-#R1_fa=$(ls ${data_path}/${project}/${subject}/${sample}/${sample/Sample_/}_S*_R1_001_trim.fastq.gz)
-#R2_fa=$(ls ${data_path}/${project}/${subject}/${sample}/${sample/Sample_/}_S*_R2_001_trim.fastq.gz)
+R1_fa=$(ls ${data_path}/${project}/${subject}/${sample}/${sample/Sample_/}_S*_R1_001_trim.fastq.gz)
+R2_fa=$(ls ${data_path}/${project}/${subject}/${sample}/${sample/Sample_/}_S*_R2_001_trim.fastq.gz)
 
-R1_fa=$(ls ${data_path}/${project}/${subject}/${sample}/${sample/Sample_/}_S*_R1_001.fastq.gz)
-R2_fa=$(ls ${data_path}/${project}/${subject}/${sample}/${sample/Sample_/}_S*_R2_001.fastq.gz)
+#R1_fa=$(ls ${data_path}/${project}/${subject}/${sample}/${sample/Sample_/}_S*_R1_001.fastq.gz)
+#R2_fa=$(ls ${data_path}/${project}/${subject}/${sample}/${sample/Sample_/}_S*_R2_001.fastq.gz)
 
 java -Djava.io.tmpdir=`pwd`/tmp_${sample} -jar /home/luol2/lingqi_workspace/picard.jar FastqToSam \
       F1=${R1_fa} \

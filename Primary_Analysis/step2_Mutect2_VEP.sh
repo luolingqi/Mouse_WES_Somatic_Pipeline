@@ -44,7 +44,7 @@ function checkJobSuccess {
 cp /home/luol2/lingqi_workspace/Mouse_WES_Pipeline/Primary/mouse_all_exon_mm10.interval_list .
 
 #1. Mutect2 Calling and Filtration
-perl -pe 's/DATA_PATH/$ENV{data_path}/g;s/PROJECT/$ENV{project}/g;s/SUBJECT/$ENV{subject}/g;s/TEST_SAMPLE/$ENV{sample}/g;s/NORMAL_SAMPLE/$ENV{normal_sample}/g' run_mutect2_and_Filter.sh | bsub -J mutect_${project}_${subject}_${sample}
+perl -pe 's#TEST_SAMPLE#$ENV{sample}#g;s#PROJECT#$ENV{project}#g;s#SUBJECT#$ENV{subject}#g;s#DATA_PATH#$ENV{data_path}#g;s#NORMAL_SAMPLE#$ENV{normal_sample}#g' run_mutect2_and_Filter.sh | bsub -J mutect_${project}_${subject}_${sample}
 jobId=$(bjobs -J mutect_${project}_${subject}_${sample} | awk '{print $1}' | grep -v JOBID)
 jobName=mutect_${project}_${subject}_${sample}
 message="Mutect2 calling and filtration going......"
@@ -53,14 +53,14 @@ sleep 30
 
 
 #2. Remove the Germline dbsnp variants for BALB/cJ strain
-perl -pe 's/DATA_PATH/$ENV{data_path}/g;s/PROJECT/$ENV{project}/g;s/SUBJECT/$ENV{subject}/g;s/TEST_SAMPLE/$ENV{sample}/g' run_remove_BALB_cJ_germline_snp_indels.sh | bsub -J rmsnp_${project}_${subject}_${sample}
+perl -pe 's#TEST_SAMPLE#$ENV{sample}#g;s#PROJECT#$ENV{project}#g;s#SUBJECT#$ENV{subject}#g;s#DATA_PATH#$ENV{data_path}#g' run_remove_BALB_cJ_germline_snp_indels.sh | bsub -J rmsnp_${project}_${subject}_${sample}
 jobId=$(bjobs -J rmsnp_${project}_${subject}_${sample} | awk '{print $1}' | grep -v JOBID)
 jobName=rmsnp_${project}_${subject}_${sample}
 message="Removing BALB/cJ Germline SNPs/INDELs going......."
 checkJobSuccess
 
 #3. VEP Annotation, extra manual filtration and variant classification by type
-perl -pe 's/DATA_PATH/$ENV{data_path}/g;s/PROJECT/$ENV{project}/g;s/SUBJECT/$ENV{subject}/g;s/TEST_SAMPLE/$ENV{sample}/g' run_VEP_annotation_BALB_cJ.sh | bsub -J VEP_${project}_${subject}_${sample}
+perl -pe 's#TEST_SAMPLE#$ENV{sample}#g;s#PROJECT#$ENV{project}#g;s#SUBJECT#$ENV{subject}#g;s#DATA_PATH#$ENV{data_path}#g' run_VEP_annotation_BALB_cJ.sh | bsub -J VEP_${project}_${subject}_${sample}
 jobId=$(bjobs -J VEP_${project}_${subject}_${sample} | awk '{print $1}' | grep -v JOBID)
 jobName=VEP_${project}_${subject}_${sample}
 message="VEP annotation going......."
