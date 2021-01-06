@@ -1,6 +1,6 @@
 #BSUB -o Myjob.%J.log
 #BSUB -e Myjob.%J.err
-#BSUB -n 1 -R "rusage[mem=8]"
+#BSUB -n 4 -R "rusage[mem=8]"
 #BSUB -W 48:00
 
 module load singularity/3.1.1
