@@ -24,20 +24,23 @@ tumor_sample_name=$(cat ${data_path}/${project}/${subject}/${sample}/tumor_name.
 # add one more filter to:
 # 1) remove variants with DP in both tumor and normal (e.g.: DP >= 10)
 # 2) remove variants seen in normal also (e.g.: AD[0:1] = 0)
-normal_sample_name=$(cat ${data_path}/${project}/${subject}/${sample}/normal_name.txt)
-# get the sample index of the normal sample
 
-NormID=$(bcftools query -l ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.BALCnormal.rm_MGP_snps_indels.vcf | nl -v 0 | grep "${normal_sample_name}" | cut -f1)
+#normal_sample_name=$(cat ${data_path}/${project}/${subject}/${sample}/normal_name.txt)
+normal_sample_name="ample_C57B6_NORMAL_IGO_10212_F_11"
+
+# get the sample index of the normal sample
+#                                               Sample_B16F10_CDDP8W_IGO_10212_F_4.aligned.duplicates_marked.recalibrated.filtered.w.C57BL_6NJ.normal.rm_MGP_snps_indels.vcf
+NormID=$(bcftools query -l ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.C57BL_6NJ.normal.rm_MGP_snps_indels.vcf | nl -v 0 | grep "${normal_sample_name}" | cut -f1)
 echo -e "NormID is \t${NormID}"
-TumorID=$(bcftools query -l ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.BALCnormal.rm_MGP_snps_indels.vcf | nl -v 0 | grep "${tumor_sample_name}" | cut -f1)
+TumorID=$(bcftools query -l ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.C57BL_6NJ.normal.rm_MGP_snps_indels.vcf | nl -v 0 | grep "${tumor_sample_name}" | cut -f1)
 echo -e "TumorID is \t${TumorID}"
 
-cp ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.BALCnormal.rm_MGP_snps_indels.vcf ${data_path}/${project}/${subject}/${sample}/temp.vcf
+cp ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.C57BL_6NJ.normal.rm_MGP_snps_indels.vcf ${data_path}/${project}/${subject}/${sample}/temp.vcf
 
-bcftools view -i "FORMAT/DP[$TumorID:0] >= 10 && FORMAT/DP[$NormID:0] >= 10 && FORMAT/AD[$NormID:1] = 0" ${data_path}/${project}/${subject}/${sample}/temp.vcf > ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.BALCnormal.rm_MGP_snps_indels.vcf 2>&1
+bcftools view -i "FORMAT/DP[$TumorID:0] >= 10 && FORMAT/DP[$NormID:0] >= 10 && FORMAT/AD[$NormID:1] = 0" ${data_path}/${project}/${subject}/${sample}/temp.vcf > ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.C57BL_6NJ.normal.rm_MGP_snps_indels.vcf 2>&1
 
 
-java -jar /data/ldiaz/luol2/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef/GenomeAnalysisTK.jar -T SelectVariants -R ${ref_fasta} -V ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.BALCnormal.rm_MGP_snps_indels.vcf -o ${data_path}/${project}/${subject}/${sample}/${VEPInputVcf} -sn ${tumor_sample_name} --excludeFiltered
+java -jar /data/ldiaz/luol2/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef/GenomeAnalysisTK.jar -T SelectVariants -R ${ref_fasta} -V ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.C57BL_6NJ.normal.rm_MGP_snps_indels.vcf -o ${data_path}/${project}/${subject}/${sample}/${VEPInputVcf} -sn ${tumor_sample_name} --excludeFiltered
 
 
 #Perform VEP using local cache (Mouse)

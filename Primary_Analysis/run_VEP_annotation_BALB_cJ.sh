@@ -24,7 +24,8 @@ tumor_sample_name=$(cat ${data_path}/${project}/${subject}/${sample}/tumor_name.
 # add one more filter to:
 # 1) remove variants with DP in both tumor and normal (e.g.: DP >= 10)
 # 2) remove variants seen in normal also (e.g.: AD[0:1] = 0)
-normal_sample_name=$(cat ${data_path}/${project}/${subject}/${sample}/normal_name.txt)
+#normal_sample_name=$(cat ${data_path}/${project}/${subject}/${sample}/normal_name.txt)
+normal_sample_name="Sample_BALBc_Norm_IGO_10212_E_1"
 # get the sample index of the normal sample
 
 NormID=$(bcftools query -l ${data_path}/${project}/${subject}/${sample}/${sample}.aligned.duplicates_marked.recalibrated.filtered.w.BALCnormal.rm_MGP_snps_indels.vcf | nl -v 0 | grep "${normal_sample_name}" | cut -f1)
