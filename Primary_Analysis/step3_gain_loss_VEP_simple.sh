@@ -8,16 +8,18 @@
 data_path=$1
 project=$2
 subject=$3
-sample=$4
-normal_sample=$5
+p_sample=$4
+t_sample=$5
+
 #readGroup=$5;export readGroup # e.g. H2JFYBBXY.5
 jobId=""
 jobName=""
 message=""
 function runSteps () {
-    sed "s#TEST_SAMPLE#${4}#g;s#PROJECT#${2}#g;s#SUBJECT#${3}#g;s#DATA_PATH#${5}#g;s#TRIM##g" run_${1}.sh |bsub -J ${1}_${2}_${3}_${4}
-    jobId=$(bjobs -J ${1}_${2}_${3}_${4} | awk '{print $1}' | grep -v JOBID)
-    jobName=${1}_${2}_${3}_${4}
+    sed "s#PARENTAL_SAMPLE#${4}#g;s#TREATED_SAMPLE#${5}#g;s#PROJECT#${2}#g;s#SUBJECT#${3}#g;s#DATA_PATH#${6}#g;" run_${1}.sh |bsub -J ${1}_${2}_${3}_${4}_vs_${5}
+    #unset data_path project subject sample readGroup
+    jobId=$(bjobs -J ${1}_${2}_${3}_${4}_vs_${5} | awk '{print $1}' | grep -v JOBID)
+    jobName=${1}_${2}_${3}_${4}_vs_${5}
     message="${1} going......"
     checkJobSuccess
     sleep 30
@@ -49,19 +51,8 @@ function checkJobSuccess {
 }
 
 
-#0. Copy mouse_all_exon_mm10.interval_list over to current folder (data_analysis)
-cp /home/luol2/lingqi_workspace/Mouse_WES_Pipeline/Primary/mouse_all_exon_mm10.interval_list .
-
-#1. Mutect2 Calling and Filtration
-runSteps mutect2_and_Filter $project $subject $sample $data_path $normal_sample
-
-
-#2. Remove the Germline dbsnp variants for BALB/cJ strain
-runSteps remove_C57BL_6NJ_germline_snp_indels $project $subject $sample $data_path
-
-
-#3. VEP Annotation, extra manual filtration and variant classification by type
-runSteps VEP_annotation_C57BL_6NJ $project $subject $sample $data_path
+#1 acquire variant gain/loss against parental 
+runSteps variants_gain_loss_treatment.vs.Parental.AF.0.05 $project $subject $p_sample $t_sample $data_path
 
 
 # Declare mission completed

@@ -1,0 +1,149 @@
+---
+title: "summary_analysis"
+author: "Lingqi Luo"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(stringr)
+library(knitr)
+library(magrittr)
+```
+# 1. Total Variant # by Types
+#############################################
+```{r echo=FALSE, error=FALSE, warning=FALSE}
+ path <- "/Users/luol2/Dropbox/MSK/Projects/Ben_Project/WES_human_Project_10212_G/"
+ 
+ vaf_count <- read_tsv(file = file.path(path,"SW480_Variant_Count.txt"))
+ vaf_count_1 <- spread(vaf_count, `Variant Type`, `Total #`)
+ vaf_count_1 %<>% rename(frameshift = frameshift_variant_only, 
+                        missense = missense_variant_only, 
+                        non_synonymous = non_synonymous_variant_only,
+                        synonymous = synonymous_variant_only) 
+ 
+ kable(vaf_count_1, caption = "Total Number of Variants by Types")
+ write_tsv(vaf_count_1, file = file.path(path, "Variant_Count_1.txt"))
+```
+
+# 2. Variant Allele Frequency Distribtion 
+##########################################################
+```{r echo=FALSE, warning=FALSE, error=FALSE}
+
+path <- "/Users/luol2/Dropbox/MSK/Projects/Ben_Project/WES_human_Project_10212_G/"
+#items <- read_tsv(file = file.path(path, "items_to_analyze.txt"))
+items <- read_tsv(file = file.path(path, "items_to_plots.txt")) %>% filter(variant_type != "frameshift") # No frameshif is found from tumor only samples
+
+MAF_df <- matrix(ncol = 2,nrow = 0)
+colnames(MAF_df) <- c("Group","MAF")
+
+for(i in 1:nrow(items)) {
+  # item category to plot (cats, comparison, variant_type)
+  # e.g. B16F10_CDDP8W,	loss,	nonsynonymous
+  cat <- items[i,c(1,3,2)] 
+  cat <- paste(cat, collapse = ".")
+
+  file <- items[i,4] 
+  tmp_df <- read.csv2(file = file.path(path,file), sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+
+  #colnames(tmp_df) <- c('CHROM','POS','REF','ALT','DP','GT','AD_REF','AD_ALT','MAF','MBQ','MMQ','MPOS')
+  colnames(tmp_df) <- c('CHROM','POS','REF','ALT','DP','MAF','GT')
+  # convert some columns to numerical
+  index <- c(1,2,5,6)
+  for(j in index) {
+    tmp_df[,j] <- as.numeric(tmp_df[,j])
+  }
+  
+  assign(paste0("df_",cat),tmp_df)
+  
+  # Generate plots
+  ylim = 30
+  
+  assign(paste0("p_",cat), ggplot(tmp_df, aes(x=MAF)) + geom_histogram(color="black", fill="white", binwidth=0.01) + ylim(0,ylim) + ggtitle(cat) + theme(plot.title = element_text(size=10,face="bold",hjust = 0.5)))
+  p <- get(paste0("p_",cat))
+  print(p)
+}
+
+
+```
+
+# 3. Variant Allele Frequency Distribtion colored by Types
+##########################################################
+```{r warning=FALSE, error=FALSE}
+############################################################################
+# Plot MAF by variant types: synonymous, missense, frameshift.....
+#############################################################################
+
+variant_types <- c("missense","frameshift","synonymous")
+
+items <- items[items$variant_type %in% variant_types,]
+#samples <- str_c(items$cats, items$comparison, items$variant_type, sep = ".")
+#files <- items$files
+
+# Declare a dataframe with column names
+df_plot <- data.frame(matrix(ncol = 9, nrow = 0))
+
+colnames(df_plot) <- c("CHROM","POS","REF","ALT","DP","MAF","GT","sample","variant_type")
+
+# Populate the df_plot with the query files
+for(i in 1:nrow(items)) {
+    sample <- paste(items[i,c("cats","comparison")], collapse = ".")
+    type <- items$variant_type[i] 
+    file <- file.path(path,items$files[i])
+    
+    tmp_df <- read.csv2(file, sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+    tmp_df %<>% mutate_at(c("V2","V5","V6"), as.numeric) %>%
+    select(c(1,2,3,4,5,6,7)) %>% 
+    mutate(sample = rep(sample,dim(tmp_df)[1]), 
+             variant_type = rep(type,dim(tmp_df)[1])
+             ) %>%
+    set_colnames(c("CHROM","POS","REF","ALT","DP","MAF","GT","sample","variant_type"))
+
+    df_plot <- rbind(df_plot,tmp_df)
+
+}
+
+write.csv(df_plot, file = "df_for_plot.csv")
+
+df_plot %<>% mutate(sample=as.factor(sample), variant_type=as.factor(variant_type))
+
+for(lvl in levels(df_plot$sample)){
+  # Generate plots
+  ylim = 40
+
+    
+  assign(paste0("p_",lvl), ggplot(df_plot[df_plot$sample == lvl,], 
+                                      aes(x=MAF, color=variant_type)) + 
+           geom_histogram(fill="white", binwidth=0.01, alpha=0.5, position="stack") + 
+           ylim(0,ylim)+ ggtitle(lvl) + 
+           theme(plot.title = element_text(size=12,face="bold",hjust = 0.5)) 
+         )
+  p <- get(paste0("p_",lvl))
+  print(p)
+}  
+
+```
+
+
+# 4. Plotting Mutation Signature Profiles 
+##########################################################
+
+```{r warning=FALSE, error=FALSE, fig.align='center', out.width="90%"}
+library(deconstructSigs)
+library(RColorBrewer)
+
+files <- list.files(path = paste0(path,"/SigMutations"),
+                    pattern = ".*.png",
+                    full.names = T)
+
+knitr::include_graphics(files)
+
+
+```
+
+
+
+
+
