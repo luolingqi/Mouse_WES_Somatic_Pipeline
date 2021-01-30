@@ -1,4 +1,4 @@
-# Diaz Lab Mouse WES Somatic Variant Calling Pipeline
+# Diaz Lab Mouse WES Somatic Variant Calling Pipeline (BALB/c & C57BL/6)
 
 This is a version-controlled code repository for **Mouse Somatic Variant Calling Pipeline** in development by the Diaz group at MSKCC. The pipeline implementation is specific for execution by the members in the **Diaz group only!!!**
 
