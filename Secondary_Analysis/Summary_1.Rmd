@@ -34,7 +34,7 @@ library(magrittr)
 
 path <- "/Users/luol2/Dropbox/MSK/Projects/Ben_Project/WES_human_Project_10212_G/"
 #items <- read_tsv(file = file.path(path, "items_to_analyze.txt"))
-items <- read_tsv(file = file.path(path, "items_to_plots.txt")) %>% filter(variant_type != "frameshift") # No frameshif is found from tumor only samples
+items <- read_tsv(file = file.path(path, "items_to_plots.txt"))
 
 MAF_df <- matrix(ncol = 2,nrow = 0)
 colnames(MAF_df) <- c("Group","MAF")
@@ -45,25 +45,28 @@ for(i in 1:nrow(items)) {
   cat <- items[i,c(1,3,2)] 
   cat <- paste(cat, collapse = ".")
 
-  file <- items[i,4] 
-  tmp_df <- read.csv2(file = file.path(path,file), sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+  file <- items[i,4]
+  if ( file.info(file.path(path, file))$size >0 ) {
+    tmp_df <- read.csv2(file = file.path(path,file), sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+        colnames(tmp_df) <- c('CHROM','POS','REF','ALT','DP','GT','AD_REF','AD_ALT','MAF','MBQ','MMQ','MPOS')
+    
+    # convert some columns to numerical
+    index <- c(1,2,5,7,8,9,10,11,12)
+    for(j in index) {
+      tmp_df[,j] <- as.numeric(tmp_df[,j])
+    }
+    
+    assign(paste0("df_",cat),tmp_df)
+    #remove(tmp_df)
+    
+    # Generate plots
+    ylim = 30
+   
+    assign(paste0("p_",cat), ggplot(tmp_df, aes(x=MAF)) + geom_histogram(color="black", fill="white", binwidth=0.01) + ylim(0,ylim) + ggtitle(gsub("\\.","\n",cat)) + theme(plot.title = element_text(size=16,face="bold",hjust = 0.5)))
+    p <- get(paste0("p_",cat))
+    print(p)
 
-  #colnames(tmp_df) <- c('CHROM','POS','REF','ALT','DP','GT','AD_REF','AD_ALT','MAF','MBQ','MMQ','MPOS')
-  colnames(tmp_df) <- c('CHROM','POS','REF','ALT','DP','MAF','GT')
-  # convert some columns to numerical
-  index <- c(1,2,5,6)
-  for(j in index) {
-    tmp_df[,j] <- as.numeric(tmp_df[,j])
-  }
-  
-  assign(paste0("df_",cat),tmp_df)
-  
-  # Generate plots
-  ylim = 30
-  
-  assign(paste0("p_",cat), ggplot(tmp_df, aes(x=MAF)) + geom_histogram(color="black", fill="white", binwidth=0.01) + ylim(0,ylim) + ggtitle(cat) + theme(plot.title = element_text(size=10,face="bold",hjust = 0.5)))
-  p <- get(paste0("p_",cat))
-  print(p)
+    }
 }
 
 
@@ -91,18 +94,22 @@ colnames(df_plot) <- c("CHROM","POS","REF","ALT","DP","MAF","GT","sample","varia
 for(i in 1:nrow(items)) {
     sample <- paste(items[i,c("cats","comparison")], collapse = ".")
     type <- items$variant_type[i] 
-    file <- file.path(path,items$files[i])
-    
-    tmp_df <- read.csv2(file, sep = "\t", header = FALSE, stringsAsFactors = FALSE)
-    tmp_df %<>% mutate_at(c("V2","V5","V6"), as.numeric) %>%
-    select(c(1,2,3,4,5,6,7)) %>% 
+    file <- items$files[i]
+    if ( file.info(file.path(path, file))$size >0 )
+    {
+      tmp_df <- read.csv2(file = file.path(path, file), 
+                          sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+      
+      tmp_df %<>% mutate_at(c("V1","V2","V5",paste0("V",7:12)), as.numeric) %>%
+    select(c(1,2,3,4,6,9)) %>% 
     mutate(sample = rep(sample,dim(tmp_df)[1]), 
              variant_type = rep(type,dim(tmp_df)[1])
              ) %>%
-    set_colnames(c("CHROM","POS","REF","ALT","DP","MAF","GT","sample","variant_type"))
+    set_colnames(c("CHROM","POS","REF","ALT","GT","MAF","sample","variant_type"))
 
     df_plot <- rbind(df_plot,tmp_df)
-
+      
+    }
 }
 
 write.csv(df_plot, file = "df_for_plot.csv")

@@ -94,7 +94,7 @@ DATA_PATH/
 ```
 
 __________________________
-### **Main Pipeline Usage (Primary Analysis Only!)**
+### **Main Pipeline Usage (Primary & Secondary Analysis!)**
 
 The entire pipeline is split into the following four steps for the sake of efficient debugging and implementation. The operator will need to supervise the successful execution of each step by lauching subsequent one. There is one batch script linked to each of the 4 steps respectively as shown below.  
 
