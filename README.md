@@ -1,4 +1,4 @@
-# Diaz Lab Mouse WES Somatic Variant Calling Pipeline (BALB/c & C57BL/6)
+# Diaz Lab Mouse WES Somatic Variant Calling Pipeline <br/> (BALB/c & C57BL/6)
 
 This is a version-controlled code repository for **Mouse Somatic Variant Calling Pipeline** in development by the Diaz group at MSKCC. The pipeline implementation is specific for execution by the members in the **Diaz group only!!!**
 
@@ -28,6 +28,8 @@ ____________________________________
 
 ___________________________________
 ### **Primary Scripts & manifest files for Automatic Pipeline Running**
+  * `step0_manifest_prep.sh` -- it creates the manifest files for secondary analysis
+  
   * `step1_preprocessing_simple.sh` -- it takes fastq file and readgroup info as inputs, and runs the following as listed in the table below
 
   * `step2_Mutect2_VEP_simple.sh` -- it takes the duplicate-removed and BQSR-recalibrated file outputs from `step1_preprocessing_simple.sh`, and runs the following as listed in the table below
@@ -52,7 +54,7 @@ Alignment quality metrics collection <br/> **(Qualimap - run_qualimap.sh)**  |
 Hybrid selection quality metrics collection <br/> **(GATK HsMetrics - run_CollectHsMetrics.sh)**  |  
 Estimate and Apply MarkDuplicate and <br/> Base Quality Score recalibration <br/> **(GATK MarkDuplicate, BQSR  - run_markduplicate.sh)**  |  
 
-**Table 2. Sample Comparison Manifest Template**
+**Table 2. Sample Comparison Manifest Template (`User Supplied`)**
 **Parental Sample** | **Treated Sample**
 ------------------- | ------------------
 Sample_SW480_P8W_IGO_10212_G_2 | Sample_SW480_P0W_IGO_10212_G_1
@@ -60,14 +62,14 @@ Sample_SW480_P8W_IGO_10212_G_2 | Sample_SW480_TMZ8W_IGO_10212_G_3
 Sample_SW480_P8W_IGO_10212_G_2 | Sample_SW480_CDDP8W_IGO_10212_G_4
 Sample_SW480_P8W_IGO_10212_G_2 | Sample_SW480_COMBO8W_IGO_10212_G_5
 
-**Table 3. VAF Distribution Manifest Template**
+**Table 3. VAF Distribution Manifest Template (`Automatically Generated`)**
 **cats** | **comparison** | **variant_type** | **files**
 -------- | -------------- | ---------------- | ---------
 Sample_SW480_CDDP8W_IGO_10212_G_4 |	loss | nonsynonymous | PITT_0522/Sample_SW480_CDDP8W_IGO_10212_G_4_vs_Sample_SW480_P8W_IGO_10212_G_2.VEP.ann.AF0.05_BQ20_MQ50.non_synonymous_variant_only.query
 Sample_SW480_CDDP8W_IGO_10212_G_4 |	gain | nonsynonymous | PITT_0522/Sample_SW480_P8W_IGO_10212_G_2_vs_Sample_SW480_CDDP8W_IGO_10212_G_4.VEP.ann.AF0.05_BQ20_MQ50.non_synonymous_variant_only.query
 Sample_SW480_CDDP8W_IGO_10212_G_4 | total |	nonsynonymous |	PITT_0522/Sample_SW480_CDDP8W_IGO_10212_G_4/Sample_SW480_CDDP8W_IGO_10212_G_4.aligned.duplicates_marked.recalibrated.targeted_sequencing.somvarius.tumor_only.sorted.rm_dbsnps.VEP.ann.AF0.05_BQ20_MQ50.non_synonymous_variant_only.query
 
-**Table 4. Mutation Signature Manifest Template**
+**Table 4. Mutation Signature Manifest Template (`Automatically Generated`)**
 **cats** | **comparison** | **files**
 -------- | -------------- | ---------
 Sample_SW480_COMBO8W_IGO_10212_G_5 | loss | PITT_0522/Sample_SW480_COMBO8W_IGO_10212_G_5_vs_Sample_SW480_P8W_IGO_10212_G_2.VEP.ann.AF0.05_BQ20_MQ50.vcf
@@ -98,6 +100,7 @@ __________________________
 
 The entire pipeline is split into the following four steps for the sake of efficient debugging and implementation. The operator will need to supervise the successful execution of each step by lauching subsequent one. There is one batch script linked to each of the 4 steps respectively as shown below.  
 
+* step0_manifest_prep.sh
 * step1_preprocessing.sh
 * step2_Mutect2_VEP.sh
 * step3_gain_loss_VEP_simple.sh
@@ -107,7 +110,24 @@ Please first copy the above shell scripts into a folder (e.g. data\_analysis) as
   
   
 ```  
-  You can write your own loop to run the pipeline for multiple samples. The following USAGE example is for single-sample only.
+  *************************************************************************************
+  **From the comparison file, prepare multiple manifest files for secondary analyses.**
+  *************************************************************************************
+  #########################
+  # prepare manifest files 
+  #########################
+  .USAGE.
+  `nohup sh step0_manifest_prep.sh DATA_PATH PROJECT SUBJECT COMPARISON 2>&1 >nohup_step0.log &`
+  
+  .OPTIONS.
+  DATA_PATH  a root directory of the entire study, required.                                 e.g. /home/luol2/lingqi_workspace/Projects/Ben_Projects
+  PROJECT    a project name, required.                                                       e.g. WES_mouse_Project_10212_E
+  SUBJECT    a subject name if any.                                                          e.g. any name here, if no, just use '.'
+  COMPARISON a file listing all pairwise comparisons (Parental vs Treated) , required.       e.g. Comparison_SW480.txt
+
+  *************************************************************************************************************************************** 
+  **You can write your own loop to run the following steps for multiple samples. The following USAGE example is for single-sample only.**
+  *************************************************************************************************************************************** 
   #################
   # preprocessing 
   #################
