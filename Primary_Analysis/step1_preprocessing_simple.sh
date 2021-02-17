@@ -87,7 +87,7 @@ runSteps CollectQualityMetrics $project $subject $sample $data_path
 runSteps markduplicate $project $subject $sample $data_path
 
 #   INDELREALIGNER
-runSteps indelrealigner $project $subject $sample $data_path
+#runSteps indelrealigner $project $subject $sample $data_path
 #8. Estimate Base Quality
 runSteps BaseRecalibrator $project $subject $sample $data_path
 
