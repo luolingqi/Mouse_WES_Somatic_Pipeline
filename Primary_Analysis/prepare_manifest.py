@@ -39,7 +39,7 @@ with open(output_vaf, "w") as vaf:
                 elif c == "loss":
                     file = "\t".join([sample,c,t,sequencer+"/"+sample+"_vs_"+parental+".VEP.ann.altAD4_AF0.01_MBQ20_MMQ50_MPOS5."+ t + "_variant_only.query"])
                 elif c == "total":
-                    file = "\t".join([sample,c,t,sequencer+"/"+sample+"/"+sample+".aligned.duplicates_marked.recalibrated.targeted_sequencing.tumor_only.gatk4_mutect2.raw_somatic_mutation.rm_dbsnps.singleSample.PASSOnly.VEP.ann.altAD4_AF0.01_MBQ20_MMQ50_MPOS5."+t+"_variant_only.query"])
+                    file = "\t".join([sample,c,t,sequencer+"/"+sample+"/"+sample+".aligned.duplicates_marked.recalibrated.filtered.w.BALCnormal.rm_MGP_snps_indels.singleSample.PASSOnly.VEP.ann.altAD4_AF0.01_MBQ20_MMQ50_MPOS5."+t+"_variant_only.query"])
                 vaf.write(file+"\n") 
     
 
@@ -56,5 +56,5 @@ with open(output_sig, "w") as sig:
             elif c == "loss":
                 file = "\t".join([sample,c,sequencer+"/"+sample+"_vs_"+parental+".VEP.ann.altAD4_AF0.01_MBQ20_MMQ50_MPOS5.vcf"])
             elif c == "total":
-                file = "\t".join([sample,c,sequencer+"/"+sample+"/"+sample+".aligned.duplicates_marked.recalibrated.targeted_sequencing.tumor_only.gatk4_mutect2.raw_somatic_mutation.rm_dbsnps.singleSample.PASSOnly.VEP.ann.altAD4_AF0.01_MBQ20_MMQ50_MPOS5.VEP.ann.vcf"])
+                file = "\t".join([sample,c,sequencer+"/"+sample+"/"+sample+".aligned.duplicates_marked.recalibrated.filtered.w.BALCnormal.rm_MGP_snps_indels.singleSample.PASSOnly.altAD4_AF0.01_MBQ20_MMQ50_MPOS5.VEP.ann.vcf"])
             sig.write(file+"\n") 
