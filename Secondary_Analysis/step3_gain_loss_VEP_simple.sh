@@ -52,7 +52,7 @@ function checkJobSuccess {
 
 
 #1 acquire variant gain/loss against parental 
-runSteps variants_gain_loss_treatment.vs.Parental.AF.0.05 $project $subject $p_sample $t_sample $data_path
+runSteps variants_gain_loss_treatment.vs.Parental_BALBc $project $subject $p_sample $t_sample $data_path
 
 
 # Declare mission completed
