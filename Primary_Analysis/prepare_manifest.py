@@ -26,7 +26,7 @@ with open(comparison,"r") as fin:
 
 # Prepare the items_to_plot
 change = ["gain","loss","total"]
-type = ["nonsynonymous","synonymous","frameshift","missense"]
+type = ["non_synonymous","synonymous","frameshift","missense"]
 
 with open(output_vaf, "w") as vaf:
     vaf.write("cats\tcomparison\tvariant_type\tfiles\n")
