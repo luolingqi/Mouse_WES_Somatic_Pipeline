@@ -25,6 +25,9 @@ vcf_treatment=${data_path}/${project}/${subject}/${sample_treatment}/${sample_tr
 command_mem="100"
 /home/luol2/lingqi_workspace/gatk-4.0.1.2/gatk  --java-options "-Xmx${command_mem}m" SelectVariants -R ${ref_fasta} -V ${vcf_treatment} --discordance ${vcf_ctl} -O ${data_path}/${project}/${subject}/${sample_ctl}_vs_${sample_treatment}.w.BALCnormal.rm_MGP_snps_indels.singleSample.PASSOnly.vcf
 
+# rename the vcf to Gain.xxxxxxx
+tab=`echo -ne "\t"`;sed -i "s/\(CHROM.*FORMAT\).*/\1${tab}Gain.${sample_treatment}/" ${data_path}/${project}/${subject}/${sample_ctl}_vs_${sample_treatment}.w.BALCnormal.rm_MGP_snps_indels.singleSample.PASSOnly.vcf
+
 module load singularity/3.1.1
 VEPInputVcf=${sample_ctl}_vs_${sample_treatment}.w.BALCnormal.rm_MGP_snps_indels.singleSample.PASSOnly.vcf
 VEPOutputVcf=${sample_ctl}_vs_${sample_treatment}.w.BALCnormal.rm_MGP_snps_indels.singleSample.PASSOnly.VEP.ann.vcf
@@ -106,6 +109,9 @@ bcftools query -f "%CHROM\t%POS\t%REF\t%ALT{0}\t%DP\t[%GT\t%AD{0}\t%AD{1}\t%AF\t
 # grab difference as treatment variant gain from Parental
 command_mem="100"
 /home/luol2/lingqi_workspace/gatk-4.0.1.2/gatk  --java-options "-Xmx${command_mem}m" SelectVariants -R ${ref_fasta} -V ${vcf_ctl} --discordance ${vcf_treatment} -O ${data_path}/${project}/${subject}/${sample_treatment}_vs_${sample_ctl}.w.BALCnormal.rm_MGP_snps_indels.singleSample.PASSOnly.vcf
+
+# rename the vcf to Loss.xxxxxxx
+tab=`echo -ne "\t"`;sed -i "s/\(CHROM.*FORMAT\).*/\1${tab}Loss.${sample_treatment}/" ${data_path}/${project}/${subject}/${sample_treatment}_vs_${sample_ctl}.w.BALCnormal.rm_MGP_snps_indels.singleSample.PASSOnly.vcf
 
 module load singularity/3.1.1
 VEPInputVcf=${sample_treatment}_vs_${sample_ctl}.w.BALCnormal.rm_MGP_snps_indels.singleSample.PASSOnly.vcf
